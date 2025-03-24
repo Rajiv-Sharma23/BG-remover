@@ -1,9 +1,9 @@
-// Api controller function to manage clerk users with database
-// http://localhost:5000/api/users/webhooks
 import { Webhook } from "svix";
 import userModel from "../Model/user.model.js";
 
 const clerkWebhooks = async (req, res) => {
+  // Api controller function to manage clerk users with database
+  // http://localhost:5000/api/user/webhooks
   try {
     // create a Svix instance with clerk webhook secret
     const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
@@ -15,47 +15,53 @@ const clerkWebhooks = async (req, res) => {
     });
 
     const { data, type } = req.body
+    console.log("Webhook event:", type, data);
 
     switch (type) {
-      case "user.created": {
-        const userData = {
-          clerkId: data.id,
-          email: data.email_addresses[0].email_address,
-          firstName: data.first_name,
-          lastName: data.last_name,
-          photo: data.image_url,
-        };
-
-        await userModel.create(userData);
-        res.json({});
-
-        break;
-      }
-      case "user.updated": {
-        const userData = {
-          email: data.email_addresses[0].email_address,
-          firstName: data.first_name,
-          lastName: data.last_name,
-          photo: data.image_url,
-        };
-
-        await userModel.findOneAndUpdate({ clerkId: data.id }, userData);
-        res.json({});
-
-        break;
-      }
-      case "user.deleted": {
-        await userModel.findOneAndDelete({ clerkId: data.id });
-        res.json({});
-
-        break;
-      }
-      default:
-        break;
-    }
+        case "user.created": {
+          const userData = {
+            clerkId: data.id,
+            email: data.email_addresses[0].email_address,
+            photo: data.image_url || "", // Fallback to empty string if missing
+            firstName: data.first_name || "", // Fallback to empty string
+            lastName: data.last_name || "", // Fallback to empty string
+            // creditBalance automatically 5 set hoga default se
+          };
+  
+          const newUser = await userModel.create(userData);
+          console.log("User created in DB:", newUser);
+          res.json({});
+          break;
+        }
+        case "user.updated": {
+          const userData = {
+            email: data.email_addresses[0].email_address,
+            photo: data.image_url || "",
+            firstName: data.first_name || "",
+            lastName: data.last_name || "",
+          };
+  
+          const updatedUser = await userModel.findOneAndUpdate(
+            { clerkId: data.id },
+            userData,
+            { new: true }
+          );
+          console.log("User updated in DB:", updatedUser);
+          res.json({});
+          break;
+        }
+        case "user.deleted": {
+          const deletedUser = await userModel.findOneAndDelete({ clerkId: data.id });
+          console.log("User deleted from DB:", deletedUser);
+          res.json({ success: true, message: "User deleted successfully" });
+          break;
+        }
+        default:
+          res.json({ success: false, message: "Invalid webhook event" });
+      } 
   } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: error.message });
+    console.log(error);
+    res.json({ success: false, message: "Error occurred while processing webhook event" });
   }
 };
 
