@@ -6,7 +6,7 @@ import BuyCredit from "./pages/BuyCredit";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
+import { ToastContainer } from 'react-toastify';
  
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         animate={{ scale: [1, 1.05, 1], opacity: [0.8, 1, 0.8] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
-
+      <ToastContainer position="bottom right"/>
       <Navbar />
       <main className="flex-grow relative z-10">
         <AnimatePresence mode="wait">

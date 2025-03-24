@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./Configs/mongoDB.js";
 import userRouter from "./Routes/user.route.js";
+import imageRouter from "./Routes/image.route.js";
 
 
 // app config
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
     res.status(200).send("Api is running");
 });
 app.use("/api/user",userRouter)
+app.use("/api/image",imageRouter)
 
 
 app.listen(port, () => {
