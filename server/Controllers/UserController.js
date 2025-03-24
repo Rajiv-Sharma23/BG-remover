@@ -1,7 +1,7 @@
 // Api controller function to manage clerk users with database
 // http://localhost:5000/api/users/webhooks
 import { Webhook } from "svix";
-import userModel from "../Model/user.model";
+import userModel from "../Model/user.model.js";
 
 const clerkWebhooks = async (req, res) => {
   try {
