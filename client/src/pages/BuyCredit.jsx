@@ -49,10 +49,10 @@ const pricingPlans = [
 ];
 
 function Pricing() {
-  // eslint-disable-next-line no-unused-vars
+ 
   const { loadCreditsData, backendUrl } = useContext(AppContext);
 
-  // eslint-disable-next-line no-unused-vars
+ 
   const navigate = useNavigate();
 
   const { getToken } = useAuth();
