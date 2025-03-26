@@ -8,22 +8,27 @@ import { useNavigate } from "react-router-dom";
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
+  const { userId } = useAuth();
   const [credit, setCredit] = useState(false);
   const [image, setImage] = useState(false);
   const [resultImage, setResultImage] = useState(false);
+
+  console.log("Fetching credits for clerkId:", userId);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
 
   const { getToken } = useAuth();
-  const { isSignedIn } = useUser();
+  const { isSignedIn } = useUser(); 
   const { openSignIn } = useClerk();
 
   const loadCreditsData = async () => {
     try {
       const token = await getToken();
-      const { data } = await axios.get(backendUrl + "/api/user/credits", {
+      const { data } = await axios.get(backendUrl + "/api/user/credits",{ clerkId: userId },
+         {
         headers: { token },
+        
       });
       if (data.success) {
         setCredit(data.credits);

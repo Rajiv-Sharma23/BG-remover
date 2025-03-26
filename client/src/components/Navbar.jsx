@@ -10,7 +10,7 @@ import { BsCoin } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { motion as Motion } from "motion/react"; // Import Motion component
 
-
+ 
 const Navbar = () => {
      
   const {openSignIn} = useClerk();
