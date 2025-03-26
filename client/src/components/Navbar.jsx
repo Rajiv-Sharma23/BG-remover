@@ -12,7 +12,7 @@ import { motion as Motion } from "motion/react"; // Import Motion component
 
 
 const Navbar = () => {
-     const user = useUser();
+     
   const {openSignIn} = useClerk();
   const {isSignedIn} = useUser();
   const{credit,loadCreditsData} = useContext( AppContext);
