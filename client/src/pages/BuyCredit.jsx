@@ -1,4 +1,4 @@
-import { motion as Motion } from "motion/react"; 
+import { motion as Motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,21 +7,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useContext } from "react";
+import { AppContext } from "@/context/AppContext";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@clerk/clerk-react";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const pricingPlans = [
   {
-    title: "Basic ",
+    title: "Basic",
+    id: 1,
     price: "$10",
-    credits:"100",
+    credits: "100",
     description: "For individuals starting out",
     buttonText: "Buy now",
     color: "from-green-400 to-teal-500",
     textColor: "text-teal-800",
   },
   {
-    title: "Enterprise",
+    title: "Growth",
+    id: 2,
     price: "$50",
-    credits:"500",
+    credits: "500",
     description: "For big companies",
     buttonText: "Get Started",
     popular: true,
@@ -30,9 +38,10 @@ const pricingPlans = [
   },
   {
     title: "Enterprise",
+    id: 3,
     price: "$250",
     description: "For large organizations",
-    credits:"5000",
+    credits: "5000",
     buttonText: "Get Started",
     color: "from-orange-400 to-red-500",
     textColor: "text-red-800",
@@ -40,8 +49,65 @@ const pricingPlans = [
 ];
 
 function Pricing() {
+  // eslint-disable-next-line no-unused-vars
+  const { loadCreditsData, backendUrl } = useContext(AppContext);
+
+  // eslint-disable-next-line no-unused-vars
+  const navigate = useNavigate();
+
+  const { getToken } = useAuth();
+
+  const initPay = async (order) => {
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Credit Payment",
+      description: "Buy Credits",
+      order_id: order.id,
+      receipt: order.receipt,
+      handler: async (response) => {
+        console.log(response);
+
+        const token = await getToken();  
+
+        try {
+          const {data} = await axios.post(backendUrl + '/api/user/verify-razor',response,{headers:{token}});
+          if(data.success){
+            loadCreditsData();
+            navigate('/');
+            toast.success("Credits added");
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error(error.message);
+          
+        }
+      },
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
+  const paymentRazorpay = async (planId) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.post(
+        backendUrl + "/api/user/pay-razor",
+        { planId },
+        { headers: { token } }
+      );
+
+      if (data.success) {
+        initPay(data.order);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
   return (
-    <div className="min-h-svh bg-gradient-to-br from-indigo-100 via-pink-100 to-red-100 flex flex-col items-center py-12  px-4 mx-4 lg:mx-44 my-10 m-auto rounded-3xl shadow-2xl ">
+    <div className="min-h-svh bg-gradient-to-br from-indigo-100 via-pink-100 to-red-100 flex flex-col items-center py-12  px-4 mx-4 lg:mx-44 my-10 m-auto rounded-3xl shadow-2xl ">
       {/* Header */}
       <Motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -58,14 +124,18 @@ function Pricing() {
       </Motion.div>
 
       {/* Pricing Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl  w-xs md:w-3xl lg:w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl  w-xs md:w-3xl lg:w-4xl">
         {pricingPlans.map((plan, index) => (
           <Motion.div
             key={plan.title}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.2, ease: "easeOut" }}
-            whileHover={{ scale: 1.08, rotate: 1, transition: { duration: 0.3 } }}
+            whileHover={{
+              scale: 1.08,
+              rotate: 1,
+              transition: { duration: 0.3 },
+            }}
             className="relative"
           >
             <Card
@@ -77,7 +147,9 @@ function Pricing() {
                 </span>
               )}
               <CardHeader>
-                <CardTitle className="text-3xl font-bold">{plan.title}</CardTitle>
+                <CardTitle className="text-3xl font-bold">
+                  {plan.title}
+                </CardTitle>
                 <p className="text-sm opacity-80">{plan.description}</p>
               </CardHeader>
               <CardContent>
@@ -86,27 +158,28 @@ function Pricing() {
                   <span className="text-xl opacity-70">/mo</span>
                 </div>
                 {/* <ul className="mt-6 space-y-3">
-                  {plan.features.map((feature) => (
-                    <li key={feature} className="text-sm font-medium">
-                      <span className="inline-block w-4 h-4 mr-2 bg-white rounded-full text-center text-xs text-black">
-                        ✓
-                      </span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul> */}
+                    {plan.features.map((feature) => (
+                      <li key={feature} className="text-sm font-medium">
+                        <span className="inline-block w-4 h-4 mr-2 bg-white rounded-full text-center text-xs text-black">
+                          ✓
+                        </span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul> */}
 
-                
                 <div>
-                  <h2 className="mt-4 text-lg"> Total credits = {plan.credits}</h2>
+                  <h2 className="mt-4 text-lg">
+                    {" "}
+                    Total credits = {plan.credits}
+                  </h2>
                 </div>
-                
-                
               </CardContent>
               <CardFooter>
                 <Button
                   className={`w-full bg-gradient-to-r ${plan.color} text-white text-md border-none hover:opacity-90`}
                   asChild
+                  onClick={() => paymentRazorpay(plan.title)}
                 >
                   <Motion.button
                     whileHover={{ scale: 1.1 }}

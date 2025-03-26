@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     photo: { type: String, default: "" }, // Required remove karo, default empty string
     firstName: { type: String, default: "" }, // Optional ke liye default
     lastName: { type: String, default: "" }, // Optional ke liye default
-    creditBalance: { type: Number, default: 5 },
+    creditBalance: { type: Number, default: 2 },
 });
 
 const userModel = mongoose.models.user || mongoose.model("user", userSchema);

@@ -7,7 +7,7 @@ import { AppContext } from "@/context/AppContext";
 import { BsCoin } from "react-icons/bs";
 
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion as Motion } from "motion/react"; // Import Motion component
 
 
@@ -16,6 +16,7 @@ const Navbar = () => {
   const {openSignIn} = useClerk();
   const {isSignedIn} = useUser();
   const{credit,loadCreditsData} = useContext( AppContext);
+  const navigate = useNavigate();
   
 
   useEffect(()=>{
@@ -47,7 +48,7 @@ const Navbar = () => {
         <div className="flex gap-6 " > 
         <span className="flex gap-1 ">
         <BsCoin className="text-3xl mt-1 antialiased text-green-500 mr-2"/>
-        <Button className=" bg-pink-200 text-md">
+        <Button className=" bg-pink-200 text-md" onClick={() => navigate("/buy")}>
           <p>Credits : {credit}</p>
         </Button>
         
