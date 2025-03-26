@@ -12,15 +12,8 @@ const app = express();
 connectDB();
 
 // middleware initialize
-app.use(cors({
-    
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "token"],
-  }));
-  app.use(express.json());
-//   app.use(ClerkExpressRequireAuth({
-//     clerkSecretKey: process.env.CLERK_SECRET_KEY,
-//   }));
+app.use(cors());
+app.use(express.json());
 
 // api routes
 app.get("/", (req, res) => {
