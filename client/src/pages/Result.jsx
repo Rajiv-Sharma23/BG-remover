@@ -30,7 +30,7 @@ const Result = () => {
                 src="https://js.pngtree.com/astro_images/bg-remover/ai-background-remover.png"
                 alt="image"
               /> */}
-              <img className="w-full h-full" src={resultImage ? resultImage:" "} alt="" />
+              <img className="w-full h-full" src={resultImage ? resultImage:" "} alt="result image" />
               <div className="absolute right-1/2 bottom-1/2 transform translate-x-1/2 translate-y-1/2">
                {!resultImage && image &&  <div className="border-4 border-violet-600 rounded-full w-14 h-14 border-t-transparent animate-spin"></div>}
               </div>

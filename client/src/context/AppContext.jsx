@@ -57,12 +57,13 @@ const AppContextProvider = (props) => {
         }
       )
       if(data.success) {
+        console.log("Received resultImage:", data.resultImage);
         setResultImage(data.resultImage);
-        data.creditBalence && setCredit(data.creditBalence);
+        data.creditBalance && setCredit(data.creditBalance);
       }else{
         toast.error(data.message);
-        data.creditBalence && setCredit(data.creditBalence);
-        if(data.creditBalence === 0){
+        data.creditBalance && setCredit(data.creditBalance);
+        if(data.creditBalance === 0){
           navigate("/buy");
         }
       }
