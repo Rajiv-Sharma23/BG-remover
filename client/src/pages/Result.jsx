@@ -1,10 +1,12 @@
 import { useContext } from "react";
 
 import { AppContext } from "@/context/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Result = () => {
 
   const {resultImage,image} = useContext(AppContext);
+  const navigate = useNavigate();                         
   return (
     <div className="mx-4 lg:mx-44 my-10 ">
       <div className=" bg-white rounded-lg px-8 py-6 drop-shadow-md">
@@ -37,7 +39,7 @@ const Result = () => {
         </div>
         {/* button */}
         {resultImage && <div className="flex justify-center sm:justify-end gap-4 flex-wrap mt-6">
-          <button className="bg-white border border-violet-600 inline-flex px-3 p-2 rounded-3xl text-violet-600   gap-3 cursor-pointer">
+          <button className="bg-white border border-violet-600 inline-flex px-3 p-2 rounded-3xl text-violet-600   gap-3 cursor-pointer" onClick={() => navigate("/")}>
             Dusra Try kar
           </button>
 

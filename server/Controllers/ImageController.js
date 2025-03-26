@@ -25,7 +25,7 @@ const removeBgImage = async (req,res) => {
 
        const imageFile = fs.createReadStream(imagePath);
        
-       const formData = new FormData();
+       const formData = new FormData()
        formData.append("image_file", imageFile);
 
        const {data} = await axios.post('https://clipdrop-api.co/remove-background/v1',formData,{

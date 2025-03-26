@@ -10,7 +10,7 @@ export const AppContext = createContext();
 const AppContextProvider = (props) => {
   const [credit, setCredit] = useState(false);
   const [image, setImage] = useState(false);
-  const [resutImage, setResutImage] = useState(false);
+  const [resultImage, setResultImage] = useState(false);
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const AppContextProvider = (props) => {
       });
       if (data.success) {
         setCredit(data.credits);
-        console.log(data.credits);
+        console.log(data.credits); 
       }
     } catch (error) {
       console.log(error.message);
@@ -41,7 +41,7 @@ const AppContextProvider = (props) => {
         return openSignIn();
       }
       setImage(image);
-      setResutImage(false);
+      setResultImage(false);
       navigate("/result");
 
       const token = await getToken();
@@ -57,7 +57,7 @@ const AppContextProvider = (props) => {
         }
       )
       if(data.success) {
-        setResutImage(data.resutImage);
+        setResultImage(data.resultImage);
         data.creditBalence && setCredit(data.creditBalence);
       }else{
         toast.error(data.message);
@@ -79,8 +79,8 @@ const AppContextProvider = (props) => {
     image,
     setImage,
     removeBg,
-    resutImage,
-    setResutImage
+    resultImage,
+    setResultImage
   };
 
   return (
