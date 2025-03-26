@@ -26,7 +26,8 @@ const clerkWebhooks = async (req, res) => {
           email: data.email_addresses[0].email_address,
           photo: data.image_url || "", // Fallback to empty string if missing
           firstName: data.first_name || "", // Fallback to empty string
-          lastName: data.last_name || "", // Fallback to empty string
+          lastName: data.last_name || "",
+          creditBalance, // Fallback to empty string
           // creditBalance automatically 5 set hoga default se
         };
 

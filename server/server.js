@@ -12,8 +12,15 @@ const app = express();
 connectDB();
 
 // middleware initialize
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+    origin: "https://bg-remover-8sgc.vercel.app", // Frontend URL
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "token"],
+  }));
+  app.use(express.json());
+//   app.use(ClerkExpressRequireAuth({
+//     clerkSecretKey: process.env.CLERK_SECRET_KEY,
+//   }));
 
 // api routes
 app.get("/", (req, res) => {
