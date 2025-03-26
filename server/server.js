@@ -13,7 +13,7 @@ connectDB();
 
 // middleware initialize
 app.use(cors({
-    origin: "https://bg-remover-8sgc.vercel.app", // Frontend URL
+    
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "token"],
   }));
