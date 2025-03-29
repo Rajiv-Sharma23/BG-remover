@@ -17,7 +17,7 @@ app.use(express.json());
 
 // api routes
 app.get("/", (req, res) => {
-    res.status(200).send("Api is running");
+    res.status(200).send("Api is running successfully");
 });
 app.use("/api/user",userRouter)
 app.use("/api/image",imageRouter)

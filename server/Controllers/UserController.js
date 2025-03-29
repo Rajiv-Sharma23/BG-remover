@@ -27,7 +27,7 @@ const clerkWebhooks = async (req, res) => {
           photo: data.image_url || "", // Fallback to empty string if missing
           firstName: data.first_name || "", // Fallback to empty string
           lastName: data.last_name || "",
-          creditBalance, // Fallback to empty string
+          creditBalance:data.creditBalance, // Fallback to empty string
           // creditBalance automatically 5 set hoga default se
         };
 
@@ -100,7 +100,7 @@ const paymentRazorpay = async (req, res) => {
     const userData = await userModel.findOne({ clerkId });
 
     if (!userData || !planId) {
-      return res.json({ success: false, message: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid request" });
     }
 
     let credits, plan, amount, date;
@@ -143,7 +143,7 @@ const paymentRazorpay = async (req, res) => {
       receipt:newTransaction._id,
     }
 
-    await razorpayInstance.orders.create(options, (err, order) => {
+    razorpayInstance.orders.create(options, (err, order) => {
       if (err) {
         console.log(err.message);
         return res.json({ success: false, message: err });
