@@ -12,14 +12,14 @@ const app = express();
 connectDB();
 
 const corsOptions = {
-    origin: 'https://bg-remover-8sgc.vercel.app',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
+    origin: '*',
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
+    credentials: true,
 };
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));  // Handle preflight requests
 
-  app.use(cors(corsOptions));
-  app.options('*', cors(corsOptions));  // This will handle preflight requests for all routes
 
 app.use(express.json());
 
