@@ -12,14 +12,14 @@
 
 import express from "express";
 import { clerkWebhooks, paymentRazorpay, userCredits, verifyRazorpay } from "../Controllers/UserController.js";
-import authUser from "../Middlewares/auth.middleware.js";
+// import authUser from "../Middlewares/auth.middleware.js";
 
 const userRouter = express.Router();
 
 userRouter.post("/webhooks", clerkWebhooks);
 
 // Apply authUser middleware to GET requests for /credits
-userRouter.get("/credits", authUser, userCredits);
+userRouter.get("/credits", userCredits);
 
 // Handle OPTIONS requests for /credits without authentication
 userRouter.options("/credits", (req, res) => {
