@@ -134,7 +134,7 @@ const AppContextProvider = (props) => {
       }
     } catch (error) {
       console.error("Error loading credits:", error.message);
-      toast.error(error.message);
+      toast.error("Bhai credits nhi mila", error.message);
     }
   };
 

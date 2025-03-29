@@ -83,7 +83,7 @@ const userCredits = async (req, res) => {
     
   } catch (error) {
     console.log(error.message);
-    res.send({ success: false, message: error.message });
+    res.send({ success: false, message: error.message },console.log("hiii credit"));
   }
 };
 
