@@ -27,7 +27,7 @@ const clerkWebhooks = async (req, res) => {
           photo: data.image_url || "", // Fallback to empty string if missing
           firstName: data.first_name || "", // Fallback to empty string
           lastName: data.last_name || "",
-          creditBalance:data.creditBalance, // Fallback to empty string
+          creditBalance, // Fallback to empty string
           // creditBalance automatically 5 set hoga default se
         };
 
@@ -79,6 +79,8 @@ const userCredits = async (req, res) => {
     const userData = await userModel.findOne({ clerkId });
 
     res.json({ success: true, credits: userData.creditBalance });
+    console.log("hiii credit");
+    
   } catch (error) {
     console.log(error.message);
     res.send({ success: false, message: error.message });
