@@ -18,6 +18,8 @@ const corsOptions = {
     credentials: true,
   };
   app.use(cors(corsOptions));
+  app.options('*', cors(corsOptions));  // This will handle preflight requests for all routes
+
 app.use(express.json());
 
 // api routes
