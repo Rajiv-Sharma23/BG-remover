@@ -12,14 +12,14 @@ const app = express();
 connectDB();
 
 // middleware initialize
-const corsOptions = {
-    origin: 'https://bg-remover-8sgc.vercel.app',
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type,Authorization',
-    credentials: true,
-  };
+// const corsOptions = {
+//     origin: 'https://bg-remover-8sgc.vercel.app',
+//     methods: 'GET,POST,PUT,DELETE,OPTIONS',
+//     allowedHeaders: 'Content-Type,Authorization',
+//     credentials: true,
+//   };
   
-  app.use(cors(corsOptions));
+  app.use(cors());
 app.use(express.json());
 
 // api routes
